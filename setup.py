@@ -36,7 +36,6 @@ setup(name='Products.DateRangeInRangeIndex',
           'Zope2',
       ],
       tests_require=tests_require,
-      test_suite="yafowil.tests.test_suite",
       extras_require = dict(
           test=tests_require,
       ),

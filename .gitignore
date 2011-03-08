@@ -20,3 +20,4 @@ docs/Makefile
 docs/make.bat
 dist
 .settings
+coverage
