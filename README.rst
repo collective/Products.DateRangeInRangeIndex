@@ -11,10 +11,29 @@ classical catalog-query post-processing.
 The index acts as an proxy for a more complex query on two DateIndexes. It 
 utilize the other indexes and does not store any index-data itself.
 
-Query Example::
+To illustrate this a query example::
 
-    TODO
+    {'myindex': {'start':'2000-10-01 00:00','end':'2010-10-31 23:59'} }
 
+This will find objects (consider start is always before end date): 
+
+1) where start date is before 2000-10-01 and end date is after 2010-10-31.
+2) where start date is between 2000-10-01 and 2010-10-31.
+3) where end date is between 2000-10-01 and 2010-10-31.
+4) where both are between 2000-10-01 and 2010-10-31.
+
+ASCII-Art of the above (q=query, e=event)::
+            
+     Q)    q_start|--------------------|q_end
+     
+     1) e_start|---------------------------|e_end
+    
+     2) e_start|---------------|e_end
+     
+     3)           e_start|-----------------|e_end
+    
+     4)           e_start|-----|e_end
+ 
 
 Source Code
 ===========

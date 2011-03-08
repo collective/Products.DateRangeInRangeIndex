@@ -2,9 +2,6 @@
 DateRangeInRangeIndex
 =====================
 
-Copyright (c) 2007 by BlueDynamics Alliance, Klein & Partner KEG, Austria
-Zope Public License (ZPL)
-
 --------------
 Overall tests.
 --------------
