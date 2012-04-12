@@ -1,19 +1,35 @@
-Finds all objects with some date range (two dates) - such as an event start and
-end - inside the date range of a query-start and query-end.
+Query a daterange on objects with a daterange.
 
 Example: You want all events within a date range of next two weeks, neither if 
 the event has started one week ago nor ends one week later - or both.
 
+Consider objects with a daterange start and end. 
+Use this addon to query all obejcts inside a query-start and query-end range, 
+where either or both of objects start and end match the query range.
+
 This index is possibly the fastest way to solve the problem, it solves it as an 
-Zope index and works direct with the catalogs fast IISets. Its much faster than 
-classical catalog-query post-processing.
+zope index and works direct with the catalogs fast IISets (or IFSets). Its much 
+faster than formerly used classical catalog-query post-processing.
 
-The index acts as an proxy for a more complex query on two DateIndexes. It 
-utilize the other indexes and does not store any index-data itself.
+There are two types of indexes available: 
 
-To illustrate this a query example::
+- ``Products.ZCatalog`` (Zope 2) compatible
 
-    {'myindex': {'start':'2000-10-01 00:00','end':'2010-10-31 23:59'} }
+- ``zope.catalog`` (Zope (3) framework) compatible
+
+The index acts as an proxy for a more complex query on two indexes (DateIndex 
+on ZCatalog or FieldIndex on zope.catalog). It utilize the other indexes and 
+does not store any index-data itself.
+
+To illustrate this a query example on ZCatalog)::
+
+    >>> result = zcatalog.search({'myindex': {'start':'2000-10-01 00:00',
+    ...                                       'end':'2010-10-31 23:59'} })
+
+or a query example on zope.catalog::
+
+    >>> query = catalog.apply({'myindex': (datetime(2000, 10, 01, 00, 00'), 
+    ...                                    datetime(2010, 10, 31, 23, 59'))})
 
 This will find objects (consider start is always before end date): 
 

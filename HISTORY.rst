@@ -2,6 +2,11 @@
 History
 =======
 
+1.2
+---
+
+- added zope.catalog compatible index. [jensens, 2012-04-12]
+
 1.1
 ---
 

@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.1'
+version = '1.2'
 shortdesc = \
-'Zope Index to query a date range on two target date indexes (start, end)'
+'zope index to query a daterange on objects with a daterange'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'HISTORY.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
@@ -24,7 +24,6 @@ setup(name='Products.DateRangeInRangeIndex',
       keywords='date start end range query zope index catalog overlap',
       author='BlueDynamics Alliance',
       author_email='dev@bluedynamics.com',
-      url=u'http://plone.org/products/daterangeinrangeindex',
       license='Simplified BSD',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
@@ -34,6 +33,7 @@ setup(name='Products.DateRangeInRangeIndex',
       install_requires=[
           'setuptools',
           'Zope2',
+          'zope.catalog',
       ],
       tests_require=tests_require,
       extras_require = dict(

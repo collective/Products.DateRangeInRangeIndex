@@ -121,7 +121,7 @@ class DateRangeInRangeIndex(UnIndex):
         # 3)           i_start|-----------------|i_end
         #
         # 4)           i_start|-----|i_end
-        
+
         ###################################
         # do 1) objects with "both outside"
         #        
@@ -141,9 +141,9 @@ class DateRangeInRangeIndex(UnIndex):
         }
         res1_2 = i_end._apply_index(query1_2)
         res1 = intersection(res1_1[0], res1_2[0])
-               
+
         #####################################
-        # do 2) objects with "q_start inside"
+        # do 2) objects with "start inside"
         # 
         query2_1 = {self.endindex: {
             # objects ending after q_start
@@ -151,7 +151,7 @@ class DateRangeInRangeIndex(UnIndex):
             'range': 'min',
             }
         }
-        res2_1 = i_end._apply_index(query2_1)        
+        res2_1 = i_end._apply_index(query2_1)
 
         query2_2 = {self.endindex: {
             # objects ending before q_end
@@ -161,9 +161,9 @@ class DateRangeInRangeIndex(UnIndex):
         }
         res2_2 = i_end._apply_index(query2_2)
         res2 = intersection(res2_1[0], res2_2[0])
-        
+
         ###################################
-        # do 3) objects with "q_end inside"
+        # do 3) objects with "end inside"
         query3_1 = {self.startindex: {
             # objects starting after q_start
             'query': q_start,
@@ -180,16 +180,16 @@ class DateRangeInRangeIndex(UnIndex):
         }
         res3_2 = i_start._apply_index(query3_2)
         res3 = intersection(res3_1[0], res3_2[0])
-        
+
         ###################################
         # do 4) object where both are inside
         # -> already found with 2) and 3)  :-)
-        
-        
+
+
         ###################################
         # union the three results
         result = multiunion([res1, res2, res3])
-        
+
         # last: return the result
         return result, (self.id,)
 
