@@ -2,8 +2,8 @@
 History
 =======
 
-1.3 (unreleased)
-----------------
+1.3
+---
 
 - added support for generic setup [SyZn, 2014-01-16]
 

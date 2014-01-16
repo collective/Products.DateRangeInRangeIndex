@@ -14,20 +14,20 @@ class DateRangeInRangeIndexNodeAdapter(NodeAdapterBase):
         """Export the object as a DOM node.
         """
         node = self._getObjectNode('index')
-        node.setAttribute('startindex', self.context.startindex)
-        node.setAttribute('endindex', self.context.endindex)
+        child_start = self._doc.createElement('startindex')
+        child_start.attributes["value"] = self.context.startindex
+        child_end = self._doc.createElement('endindex')
+        child_end.attributes["value"] = self.context.endindex
+        node.appendChild(child_start)
+        node.appendChild(child_end)
         return node
 
     def _importNode(self, node):
         """Import the object from the DOM node.
         """
-        _before = (self.context.startindex, self.context.endindex)
-        startindex =  node.getAttribute('startindex').encode('utf-8')
-	endindex = node.getAttribute('endindex').encode('utf-8')
-        _after = (startindex, endindex)
-        if _before != _after:
-            self.context.startindex = startindex
-	    self.context.endindex = endindex
+        child_nodes = {_.tagName:_.getAttribute('value') for _ in node.childNodes if _.nodeType==1}
+        self.context.startindex = child_nodes["startindex"].encode('utf-8')
+        self.context.endindex = child_nodes["endindex"].encode('utf-8')
 
     node = property(_exportNode, _importNode)
 
