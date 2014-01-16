@@ -51,7 +51,9 @@ class DateRangeInRangeIndex(UnIndex):
                  extra=None, caller=None):
         UnIndex.__init__(self, id, ignore_ex=None, call_methods=None, 
                          extra=None, caller=None)
-        self.caller = caller        
+        self.caller = caller
+	if extra is None:
+            return        
         try:
             self.startindex = extra.startindex
             self.endindex   = extra.endindex
