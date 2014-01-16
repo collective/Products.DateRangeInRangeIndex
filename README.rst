@@ -49,7 +49,22 @@ ASCII-Art of the above (q=query, e=event)::
      3)           e_start|-----------------|e_end
     
      4)           e_start|-----|e_end
- 
+
+It's also possible to configure this indexer through XML. Add a
+``catalog.xml`` to your profile with the following settings::
+
+	<?xml version="1.0"?>
+	<object name="portal_catalog" meta_type="Plone Catalog Tool">
+
+    <index name="start_end_range" meta_type="DateRangeInRangeIndex">
+        <startindex value="your_custom_start_field_index" />
+        <endindex value="your_custom_end_field_index" />
+    </index>
+
+	</object>
+
+The ``startindex`` and ``endindex`` nodes define the indexes for the
+start and end fields of this DateRangeInRangeIndex.
 
 Source Code
 ===========
@@ -64,4 +79,4 @@ Contributors
 ============
 
 - Jens W. Klein <jens@bluedynamics.com>
-
+- Zalán Somogyváry [SyZn]

@@ -21,3 +21,6 @@ docs/make.bat
 dist
 .settings
 coverage
+include/
+lib/
+local/

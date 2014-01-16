@@ -38,5 +38,6 @@ setup(name='Products.DateRangeInRangeIndex',
       tests_require=tests_require,
       extras_require = dict(
           test=tests_require,
+	  gs=['Products.GenericSetup']
       ),
 )

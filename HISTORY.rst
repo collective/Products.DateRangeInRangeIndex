@@ -5,7 +5,7 @@ History
 1.3 (unreleased)
 ----------------
 
-- nothing happended so far
+- added support for generic setup [SyZn, 2014-01-16]
 
 1.2
 ---

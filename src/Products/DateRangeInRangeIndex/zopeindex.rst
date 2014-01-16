@@ -34,7 +34,7 @@ Find all by defining a Date befor start of (e1) and after end of (e1|2)::
     ...     {'driri': (self.str2datetime('1999-12-31 00:00'), 
     ...                self.str2datetime('2001-01-01 00:00')) }
     ... )
-    >>> interact(locals())
+    
     >>> self.idsOfResultsSorted(results)
     [1, 2, 3, 4]
     

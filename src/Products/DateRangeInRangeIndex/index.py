@@ -12,6 +12,8 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog.Catalog import Catalog
 from Products.PluginIndexes.common.util import parseIndexRequest
 from Products.PluginIndexes.common.UnIndex import UnIndex
+from .interfaces import IDateRangeInRangeIndex
+from zope.interface import implementer
 
 _marker = list()
 
@@ -27,6 +29,7 @@ def manage_addDRIRIndex(self, id, extra=None, REQUEST=None, RESPONSE=None,
                                   REQUEST=REQUEST, RESPONSE=RESPONSE, URL1=URL3)
     return result    
 
+@implementer(IDateRangeInRangeIndex)
 class DateRangeInRangeIndex(UnIndex):
     """
     """
