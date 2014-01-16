@@ -38,6 +38,11 @@ setup(name='Products.DateRangeInRangeIndex',
       tests_require=tests_require,
       extras_require = dict(
           test=tests_require,
-	  gs=['Products.GenericSetup']
+	  	  gs=['Products.GenericSetup']
       ),
+	  entry_points="""
+	  [z3c.autoinclude.plugin]
+	  target = plone
+	  """,
+
 )
