@@ -4,7 +4,7 @@ Example: You want all events within a date range of next two weeks, neither if
 the event has started one week ago nor ends one week later - or both.
 
 Consider objects with a daterange start and end. 
-Use this addon to query all obejcts inside a query-start and query-end range, 
+Use this addon to query all objects inside a query-start and query-end range, 
 where either or both of objects start and end match the query range.
 
 This index is possibly the fastest way to solve the problem, it solves it as an 
