@@ -1,14 +1,14 @@
-from zope.component import adapts
-
+# -*- coding: utf-8 -*-
+from Products.DateRangeInRangeIndex.interfaces import IDateRangeInRangeIndex
 from Products.GenericSetup.interfaces import ISetupEnviron
 from Products.GenericSetup.utils import NodeAdapterBase
-from Products.DateRangeInRangeIndex.interfaces import IDateRangeInRangeIndex
+from zope.component import adapter
 
+
+@adapter(IDateRangeInRangeIndex, ISetupEnviron)
 class DateRangeInRangeIndexNodeAdapter(NodeAdapterBase):
     """Node im- and exporter for DateRangeInRangeIndex.
     """
-
-    adapts(IDateRangeInRangeIndex, ISetupEnviron)
 
     def _exportNode(self):
         """Export the object as a DOM node.
@@ -25,9 +25,11 @@ class DateRangeInRangeIndexNodeAdapter(NodeAdapterBase):
     def _importNode(self, node):
         """Import the object from the DOM node.
         """
-        child_nodes = {_.tagName:_.getAttribute('value') for _ in node.childNodes if _.nodeType==1}
+        child_nodes = {
+            _.tagName: _.getAttribute('value')
+            for _ in node.childNodes if _.nodeType == 1
+        }
         self.context.startindex = child_nodes["startindex"].encode('utf-8')
         self.context.endindex = child_nodes["endindex"].encode('utf-8')
 
     node = property(_exportNode, _importNode)
-

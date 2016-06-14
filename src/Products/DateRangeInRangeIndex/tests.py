@@ -1,21 +1,22 @@
-import unittest
-import doctest
+# -*- coding: utf-8 -*-
+from DateTime import DateTime
 from interlude import interact
+from Products.DateRangeInRangeIndex.index import DateRangeInRangeIndex as z2DateRangeInRangeIndex  # noqa
+from Products.DateRangeInRangeIndex.zopeindex import DateRangeInRangeIndex as z3DateRangeInRangeIndex  # noqa
+from Products.PluginIndexes.DateIndex.DateIndex import DateIndex
+from Products.ZCatalog.Catalog import Catalog as z2Catalog
 from Testing import ZopeTestCase as ztc
 from zope.catalog.catalog import Catalog as z3Catalog
 from zope.catalog.field import FieldIndex
-from Products.ZCatalog.Catalog import Catalog as z2Catalog
-from Products.PluginIndexes.DateIndex.DateIndex import DateIndex
-from Products.DateRangeInRangeIndex.index import \
-    DateRangeInRangeIndex as z2DateRangeInRangeIndex
-from Products.DateRangeInRangeIndex.zopeindex import \
-    DateRangeInRangeIndex as z3DateRangeInRangeIndex
+
 import datetime
-from DateTime import DateTime
+import doctest
+import unittest
 
 optionflags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
 
 ztc.installProduct('DateRangeInRangeIndex')
+
 
 class DummyEvent(object):
     """some dummy with a start and end to index"""
@@ -24,6 +25,7 @@ class DummyEvent(object):
         self.id = id
         self.start = start
         self.end = end
+
 
 class DRIRITestcase(ztc.ZopeTestCase):
     """Base TestCase for DateRangeInRangeIndex."""
@@ -39,28 +41,41 @@ class DRIRITestcase(ztc.ZopeTestCase):
         idxend = DateIndex('end')
         self.app.catalog.addIndex('start', idxstart)
         self.app.catalog.addIndex('end', idxend)
-        driri = z2DateRangeInRangeIndex('driri',
-                                      extra={'startindex':'start',
-                                             'endindex':'end'},
-                                      caller=self.app.catalog)
+        driri = z2DateRangeInRangeIndex(
+            'driri',
+            extra={
+                'startindex': 'start',
+                'endindex': 'end'
+            },
+            caller=self.app.catalog
+        )
         self.app.catalog.addIndex('driri', driri)
         self.app.catalog.addColumn('id')
 
         # Zope 3 Index bootstrap
         self.app.z3catalog = z3Catalog()
-        self.app.z3catalog[u'start'] = FieldIndex(field_name='start',
-                                                  field_callable=False)
-        self.app.z3catalog[u'end'] = FieldIndex(field_name='end',
-                                                field_callable=False)
-        self.app.z3catalog[u'driri'] = z3DateRangeInRangeIndex(u'start', u'end')
-
+        self.app.z3catalog[u'start'] = FieldIndex(
+            field_name='start',
+            field_callable=False
+        )
+        self.app.z3catalog[u'end'] = FieldIndex(
+            field_name='end',
+            field_callable=False
+        )
+        self.app.z3catalog[u'driri'] = z3DateRangeInRangeIndex(
+            u'start',
+            u'end'
+        )
 
     def buildDummies(self, cases):
         """setup dummies"""
         dummies = {}
         for id in cases:
-            dummy = DummyEvent(id, self.dtfactory(cases[id][0]),
-                                   self.dtfactory(cases[id][1]))
+            dummy = DummyEvent(
+                id,
+                self.dtfactory(cases[id][0]),
+                self.dtfactory(cases[id][1])
+            )
             dummies[id] = dummy
         return dummies
 
@@ -74,7 +89,6 @@ class DRIRITestcase(ztc.ZopeTestCase):
 
     def idsOfBrainsSorted(self, brains):
         return sorted([brain.id for brain in brains])
-
 
     def idsOfResultsSorted(self, results):
         return sorted(results)
@@ -95,13 +109,13 @@ TESTFILES = [
     'zopeindex.rst'
 ]
 
+
 def test_suite():
 
     return unittest.TestSuite([
         ztc.ZopeDocFileSuite(
             filename,
             optionflags=optionflags,
-            globs={'interact': interact,
-                },
+            globs={'interact': interact},
             test_class=DRIRITestcase
         ) for filename in TESTFILES])

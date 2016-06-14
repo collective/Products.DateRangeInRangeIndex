@@ -1,18 +1,15 @@
-from AccessControl import ClassSecurityInfo
-from Globals import (
-    DTMLFile, 
-    InitializeClass,
-)
-from BTrees.IIBTree import (
-    multiunion, 
-    intersection, 
-    IISet
-)
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.ZCatalog.Catalog import Catalog
-from Products.PluginIndexes.common.util import parseIndexRequest
-from Products.PluginIndexes.common.UnIndex import UnIndex
+# -*- coding: utf-8 -*-
 from .interfaces import IDateRangeInRangeIndex
+from AccessControl import ClassSecurityInfo
+from BTrees.IIBTree import IISet
+from BTrees.IIBTree import intersection
+from BTrees.IIBTree import multiunion
+from Globals import DTMLFile
+from Globals import InitializeClass
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from Products.PluginIndexes.common.UnIndex import UnIndex
+from Products.PluginIndexes.common.util import parseIndexRequest
+from Products.ZCatalog.Catalog import Catalog
 from zope.interface import implementer
 
 _marker = list()
@@ -22,62 +19,71 @@ MGMT_PERMISSION = 'Manage ZCatalogIndex Entries'
 
 manage_addDRIRIndexForm = DTMLFile('www/addDRIRIndex', globals())
 
+
 def manage_addDRIRIndex(self, id, extra=None, REQUEST=None, RESPONSE=None,
-                         URL3=None):
+                        URL3=None):
     """Adds a date range in range index"""
-    result = self.manage_addIndex(id, 'DateRangeInRangeIndex', extra=extra,
-                                  REQUEST=REQUEST, RESPONSE=RESPONSE, URL1=URL3)
-    return result    
+    result = self.manage_addIndex(
+        id,
+        'DateRangeInRangeIndex',
+        extra=extra,
+        REQUEST=REQUEST,
+        RESPONSE=RESPONSE,
+        URL1=URL3
+    )
+    return result
+
 
 @implementer(IDateRangeInRangeIndex)
 class DateRangeInRangeIndex(UnIndex):
     """
     """
-    __implements__ = (getattr(UnIndex,'__implements__',()),)
-
-    meta_type="DateRangeInRangeIndex"
+    meta_type = "DateRangeInRangeIndex"
     security = ClassSecurityInfo()
-    manage_options= (
-        {'label': 'Settings',
-         'action': 'manage_main',
+    manage_options = (
+        {
+            'label': 'Settings',
+            'action': 'manage_main',
         },
     )
-    manage_main = PageTemplateFile('www/manageDRIRIndex', globals())    
+    manage_main = PageTemplateFile('www/manageDRIRIndex', globals())
     query_options = ['start', 'end']
-    
+
     startindex = endindex = None
-    
-    def __init__(self, id, ignore_ex=None, call_methods=None, 
+
+    def __init__(self, id, ignore_ex=None, call_methods=None,
                  extra=None, caller=None):
-        UnIndex.__init__(self, id, ignore_ex=None, call_methods=None, 
+        UnIndex.__init__(self, id, ignore_ex=None, call_methods=None,
                          extra=None, caller=None)
         self.caller = caller
-	if extra is None:
-            return        
+        if extra is None:
+            return
         try:
             self.startindex = extra.startindex
-            self.endindex   = extra.endindex
+            self.endindex = extra.endindex
         except AttributeError:
             try:
-                # alternative: allow a dict (lowers bootstrapping effort 
+                # alternative: allow a dict (lowers bootstrapping effort
                 # from code)
                 self.startindex = extra['startindex']
-                self.endindex   = extra['endindex']
+                self.endindex = extra['endindex']
             except AttributeError:
-                raise ValueError, "DateRangeInRangeIndex needs 'extra' kwarg "+\
-                      "with keys or attributes 'startindex' and 'endindex' " +\
-                      "pointing to two existing DateIndex'es."
-        
-        
+                raise ValueError(
+                    'DateRangeInRangeIndex needs \'extra\' kwarg with keys or '
+                    'attributes \'startindex\' and \'endindex\' '
+                    'pointing to two existing DateIndex\'es.'
+                )
+
     def _getCatalog(self):
         # attention: we're using heuristics here
         if hasattr(self.caller, 'uids') or isinstance(self.caller, Catalog):
             return self.caller
         elif hasattr(self.caller, '_catalog'):
-            return self.caller._catalog        
+            return self.caller._catalog
         else:
-            raise 'DateRangeInRangeIndex cant work w/o knowing about its catalog'
-
+            raise ValueError(
+                'DateRangeInRangeIndex cant work w/o knowing about its catalog'
+            )
 
     def _apply_index(self, request, cid='', type=type):
         """Apply the index to query parameters given in the request arg.
@@ -100,48 +106,50 @@ class DateRangeInRangeIndex(UnIndex):
           - if the value is a sequence, return a union search.
 
         """
-        record = parseIndexRequest(request, self.id, self.query_options)        
-        if record.keys is None: 
+        record = parseIndexRequest(request, self.id, self.query_options)
+        if record.keys is None:
             return None
 
         q_start = record.get('start', None)
-        q_end = record.get('end', None)        
-        
+        q_end = record.get('end', None)
+
         if q_start is None or q_end is None:
             return IISet(), (self.id,)
-            
+
         # get both indexes: for start and end
         zcatalog = self._getCatalog()
         i_start = zcatalog.getIndex(self.startindex)
-        i_end   = zcatalog.getIndex(self.endindex)
-        
+        i_end = zcatalog.getIndex(self.endindex)
+
         # search:
-        #        
+        #
         #       q_start|--------------------|q_end
         #
         # 1) i_start|---------------------------|i_end
         #
         # 2) i_start|---------------|i_end
-        # 
+        #
         # 3)           i_start|-----------------|i_end
         #
         # 4)           i_start|-----|i_end
 
         ###################################
         # do 1) objects with "both outside"
-        #        
-        query1_1 = {self.startindex: {
-            # objects starting before q_start
-            'query': q_start,
-            'range': 'max',
+        #
+        query1_1 = {
+            self.startindex: {
+                # objects starting before q_start
+                'query': q_start,
+                'range': 'max',
             }
         }
         res1_1 = i_start._apply_index(query1_1)
 
-        query1_2 = {self.endindex: {
-            # objects ending after q_end
-            'query': q_end,
-            'range': 'min',
+        query1_2 = {
+            self.endindex: {
+                # objects ending after q_end
+                'query': q_end,
+                'range': 'min',
             }
         }
         res1_2 = i_end._apply_index(query1_2)
@@ -149,19 +157,21 @@ class DateRangeInRangeIndex(UnIndex):
 
         #####################################
         # do 2) objects with "start inside"
-        # 
-        query2_1 = {self.endindex: {
-            # objects ending after q_start
-            'query': q_start,
-            'range': 'min',
+        #
+        query2_1 = {
+            self.endindex: {
+                # objects ending after q_start
+                'query': q_start,
+                'range': 'min',
             }
         }
         res2_1 = i_end._apply_index(query2_1)
 
-        query2_2 = {self.endindex: {
-            # objects ending before q_end
-            'query': q_end,
-            'range': 'max',
+        query2_2 = {
+            self.endindex: {
+                # objects ending before q_end
+                'query': q_end,
+                'range': 'max',
             }
         }
         res2_2 = i_end._apply_index(query2_2)
@@ -169,18 +179,20 @@ class DateRangeInRangeIndex(UnIndex):
 
         ###################################
         # do 3) objects with "end inside"
-        query3_1 = {self.startindex: {
-            # objects starting after q_start
-            'query': q_start,
-            'range': 'min',
+        query3_1 = {
+            self.startindex: {
+                # objects starting after q_start
+                'query': q_start,
+                'range': 'min',
             }
         }
         res3_1 = i_start._apply_index(query3_1)
 
-        query3_2 = {self.startindex: {
-            # objects starting before q_end
-            'query': q_end,
-            'range': 'max',
+        query3_2 = {
+            self.startindex: {
+                # objects starting before q_end
+                'query': q_end,
+                'range': 'max',
             }
         }
         res3_2 = i_start._apply_index(query3_2)
@@ -189,7 +201,6 @@ class DateRangeInRangeIndex(UnIndex):
         ###################################
         # do 4) object where both are inside
         # -> already found with 2) and 3)  :-)
-
 
         ###################################
         # union the three results
@@ -201,19 +212,19 @@ class DateRangeInRangeIndex(UnIndex):
     def index_object(self, documentId, obj, threshold=None):
         """not used, we're just a kind of proxy without own storage"""
         return 0
-    
+
     def unindex_object(self, documentId):
         """ In this index we need to do exact nothing, as it is just a proxy
-        """      
+        """
         pass
-        
-    security.declareProtected(VIEW_PERMISSION, 'getStartIndexField')
+
+    @security.protected(VIEW_PERMISSION)
     def getStartIndexField(self):
         return self.startindex
 
-    security.declareProtected(VIEW_PERMISSION, 'getEndIndexField')
+    @security.protected(VIEW_PERMISSION)
     def getEndIndexField(self):
         return self.endindex
 
-        
+
 InitializeClass(DateRangeInRangeIndex)

@@ -2,6 +2,11 @@
 History
 =======
 
+1.3.1
+-----
+
+- some code cleanup [jensens, 2016-06-14]
+
 1.3
 ---
 
