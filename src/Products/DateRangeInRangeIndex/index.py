@@ -1,13 +1,9 @@
 from AccessControl import ClassSecurityInfo
-from Globals import (
-    DTMLFile, 
-    InitializeClass,
-)
-from BTrees.IIBTree import (
-    multiunion, 
-    intersection, 
-    IISet
-)
+from AccessControl.class_init import InitializeClass
+from App.special_dtml import DTMLFile
+from BTrees.IIBTree import IISet
+from BTrees.IIBTree import intersection
+from BTrees.IIBTree import multiunion
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog.Catalog import Catalog
 from Products.PluginIndexes.common.util import parseIndexRequest

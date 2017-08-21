@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.3'
+version = '1.4'
 shortdesc = \
 'zope index to query a daterange on objects with a daterange'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
@@ -31,6 +31,7 @@ setup(name='Products.DateRangeInRangeIndex',
       include_package_data=True,
       zip_safe=True,
       install_requires=[
+          'AccessControl',
           'setuptools',
           'Zope2',
           'zope.catalog',
