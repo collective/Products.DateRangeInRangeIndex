@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from .interfaces import IDateRangeInRangeIndex
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
+from App.special_dtml import DTMLFile
 from BTrees.IIBTree import IISet
 from BTrees.IIBTree import intersection
 from BTrees.IIBTree import multiunion
-from Globals import DTMLFile
-from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluginIndexes.common.UnIndex import UnIndex
 from Products.PluginIndexes.common.util import parseIndexRequest
