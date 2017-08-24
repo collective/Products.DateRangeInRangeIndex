@@ -4,8 +4,9 @@ dist: trusty
 python:
     - "2.7"
 install:
-    - python bootstrap.py
-    - bin/buildout
+    - pip install zc.buildout
+    - buildout bootstrap
+    - buildout
 script:
     - bin/test -v
 notifications:
