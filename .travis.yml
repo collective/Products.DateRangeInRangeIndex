@@ -4,11 +4,13 @@ dist: trusty
 python:
     - "2.7"
 install:
-    - pip install zc.buildout
+    - pip install zc.buildout coverage coveralls
     - buildout bootstrap
     - buildout
 script:
-    - bin/test -v
+    - coverage run bin/test -v
+after_success:
+  - coveralls
 notifications:
     email: false
 cache:
