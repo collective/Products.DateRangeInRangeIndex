@@ -2,8 +2,8 @@
 History
 =======
 
-2.0
------
+2.0 (unreleased)
+----------------
 
 - some code cleanup [jensens, 2016-06-14]
 
