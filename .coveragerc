@@ -1,6 +1,6 @@
 [run]
 branch = True
-source = Products.DateRangeInRangeIndex
+source = Products
 
 [report]
 precision = 2
