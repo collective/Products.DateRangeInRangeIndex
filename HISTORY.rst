@@ -2,7 +2,7 @@
 History
 =======
 
-1.4 (unreleased)
+1.4 (2017-09-08)
 ----------------
 
 - Remove dependency from `Globals` for Zope 4 compat. [sallner, 2017-08-21]
