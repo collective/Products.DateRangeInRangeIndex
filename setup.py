@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.4'
+version = '1.4.1.dev0'
 shortdesc = \
 'zope index to query a daterange on objects with a daterange'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
