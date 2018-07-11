@@ -67,7 +67,7 @@ class DateRangeInRangeIndex(SimpleItem):
                 # from code)
                 self.startindex = extra['startindex']
                 self.endindex = extra['endindex']
-            except AttributeError:
+            except KeyError:
                 raise ValueError(
                     'DateRangeInRangeIndex needs \'extra\' kwarg with keys or '
                     'attributes \'startindex\' and \'endindex\' '
