@@ -2,7 +2,7 @@
 
 
 def initialize(context):
-    import index
+    from . import index
     context.registerClass(
         index.DateRangeInRangeIndex,
         permission='Add Pluggable Index',

@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-from zope.interface import Interface
+import Products.PluginIndexes.interfaces
 
 
-class IDateRangeInRangeIndex(Interface):
+class IDateRangeInRangeIndex(Products.PluginIndexes.interfaces.IQueryIndex):
     pass

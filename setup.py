@@ -6,7 +6,7 @@ import os
 
 
 version = '2.0.dev0'
-shortdesc = 'zope index to query a daterange on objects with a daterange'
+shortdesc = 'Zope index to query a daterange on objects with a daterange'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'CHANGES.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
@@ -20,7 +20,14 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
+        'Framework :: Zope :: 2',
+        'Framework :: Zope :: 3',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Software Development',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'License :: OSI Approved :: BSD License',
@@ -37,7 +44,8 @@ setup(
     install_requires=[
         'AccessControl',
         'setuptools',
-        'Zope2',
+        'Zope',
+        'Products.ZCatalog >= 4.0a2',
         'zope.catalog',
     ],
     tests_require=tests_require,

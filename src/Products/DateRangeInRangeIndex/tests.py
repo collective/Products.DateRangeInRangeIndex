@@ -33,8 +33,7 @@ class DRIRITestcase(ztc.ZopeTestCase):
     dtfactory = None
 
     def afterSetUp(self):
-        """set up a base scenario"""
-
+        """Set up a base scenario."""
         # Zope 2 Index bootstrap
         self.app.catalog = z2Catalog()
         idxstart = DateIndex('start')
@@ -104,6 +103,43 @@ class DRIRITestcase(ztc.ZopeTestCase):
     def str2DateTime(self, dtstr):
         return DateTime(dtstr)
 
+
+class IndexTests(DRIRITestcase):
+    """Tests of .index.DateRangeInRangeIndex. to increase test coverage."""
+
+    def test_index__DateRangeInRangeIndex____init____1(self):
+        """It can be called without an `extra`."""
+        index = z2DateRangeInRangeIndex('driri')
+        self.assertIsNone(index.startindex)
+        self.assertIsNone(index.endindex)
+
+    def test_index__DateRangeInRangeIndex____init____2(self):
+        """The `extra` can have the configuration on attributes."""
+        class extra:
+            startindex = 'start'
+            endindex = 'end'
+        index = z2DateRangeInRangeIndex('driri', extra=extra)
+        self.assertEqual('start', index.startindex)
+        self.assertEqual('end', index.endindex)
+
+    def test_index__DateRangeInRangeIndex____init____3(self):
+        """It raises a ValueError if `extra` has not the needed keys."""
+        with self.assertRaises(ValueError) as err:
+            z2DateRangeInRangeIndex('driri', extra={})
+        self.assertTrue(str(err.exception).startswith(
+            "DateRangeInRangeIndex needs 'extra' kwarg with keys or "))
+
+    def test_index__DateRangeInRangeIndex__query_index__1(self):
+        """It requires a `caller` to be set."""
+        index = z2DateRangeInRangeIndex(
+            'driri', extra={'startindex': 'start', 'endindex': 'end'})
+        with self.assertRaises(ValueError) as err:
+            index.query_index({'start': 1, 'end': 2})
+        self.assertEqual(
+            'DateRangeInRangeIndex cant work w/o knowing about its catalog',
+            str(err.exception))
+
+
 TESTFILES = [
     'index.rst',
     'zopeindex.rst'
@@ -112,10 +148,12 @@ TESTFILES = [
 
 def test_suite():
 
-    return unittest.TestSuite([
+    suite = unittest.TestSuite([
         ztc.ZopeDocFileSuite(
             filename,
             optionflags=optionflags,
             globs={'interact': interact},
             test_class=DRIRITestcase
         ) for filename in TESTFILES])
+    suite.addTests(unittest.makeSuite(IndexTests))
+    return suite
