@@ -7,8 +7,7 @@ from BTrees.IIBTree import IISet
 from BTrees.IIBTree import intersection
 from BTrees.IIBTree import multiunion
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.PluginIndexes.common.UnIndex import UnIndex
-from Products.PluginIndexes.common.util import parseIndexRequest
+from OFS.SimpleItem import SimpleItem
 from Products.ZCatalog.Catalog import Catalog
 from zope.interface import implementer
 
@@ -35,7 +34,7 @@ def manage_addDRIRIndex(self, id, extra=None, REQUEST=None, RESPONSE=None,
 
 
 @implementer(IDateRangeInRangeIndex)
-class DateRangeInRangeIndex(UnIndex):
+class DateRangeInRangeIndex(SimpleItem):
     """
     """
     meta_type = "DateRangeInRangeIndex"
@@ -48,13 +47,14 @@ class DateRangeInRangeIndex(UnIndex):
     )
     manage_main = PageTemplateFile('www/manageDRIRIndex', globals())
     query_options = ['start', 'end']
+    operators = ('',)
+    useOperator = ''
 
     startindex = endindex = None
 
     def __init__(self, id, ignore_ex=None, call_methods=None,
                  extra=None, caller=None):
-        UnIndex.__init__(self, id, ignore_ex=None, call_methods=None,
-                         extra=None, caller=None)
+        self.id = id
         self.caller = caller
         if extra is None:
             return
@@ -85,7 +85,7 @@ class DateRangeInRangeIndex(UnIndex):
                 'DateRangeInRangeIndex cant work w/o knowing about its catalog'
             )
 
-    def _apply_index(self, request, cid='', type=type):
+    def query_index(self, record, resultset=None):
         """Apply the index to query parameters given in the request arg.
 
         The request argument should be a mapping object.
@@ -106,10 +106,6 @@ class DateRangeInRangeIndex(UnIndex):
           - if the value is a sequence, return a union search.
 
         """
-        record = parseIndexRequest(request, self.id, self.query_options)
-        if record.keys is None:
-            return None
-
         q_start = record.get('start', None)
         q_end = record.get('end', None)
 
@@ -207,7 +203,7 @@ class DateRangeInRangeIndex(UnIndex):
         result = multiunion([res1, res2, res3])
 
         # last: return the result
-        return result, (self.id,)
+        return result
 
     def index_object(self, documentId, obj, threshold=None):
         """not used, we're just a kind of proxy without own storage"""
@@ -225,6 +221,9 @@ class DateRangeInRangeIndex(UnIndex):
     @security.protected(VIEW_PERMISSION)
     def getEndIndexField(self):
         return self.endindex
+
+    def clear(self):
+        pass
 
 
 InitializeClass(DateRangeInRangeIndex)

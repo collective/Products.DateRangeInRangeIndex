@@ -38,6 +38,7 @@ setup(
         'AccessControl',
         'setuptools',
         'Zope2',
+        'Products.ZCatalog >= 4.0a2',
         'zope.catalog',
     ],
     tests_require=tests_require,

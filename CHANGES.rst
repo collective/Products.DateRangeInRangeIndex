@@ -5,6 +5,9 @@ History
 2.0 (unreleased)
 ----------------
 
+- Add support for ``Products.ZCatalog >= 4`` while dropping support for older
+  versions. [icemac, 2018-07-11]
+
 - some code cleanup [jensens, 2016-06-14]
 
 - Remove dependency from `Globals` for Zope 4 compat. [sallner, 2017-08-21]
