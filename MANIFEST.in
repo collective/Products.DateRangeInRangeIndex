@@ -3,5 +3,13 @@ include .coveragerc
 include buildout.cfg
 include tox.ini
 
+include .gitignore
+exclude .gitignore
+
+include .travis.yml
+exclude .travis.yml
+
+exclude MANIFEST.in
+
 recursive-include src *
 recursive-exclude src *.pyc
