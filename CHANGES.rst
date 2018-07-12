@@ -2,7 +2,7 @@
 History
 =======
 
-2.0 (unreleased)
+2.0 (2018-07-12)
 ----------------
 
 - Add support for ``Products.ZCatalog >= 4`` while dropping support for older
