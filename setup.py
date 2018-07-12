@@ -35,6 +35,7 @@ setup(
     keywords='date start end range query zope index catalog overlap',
     author='BlueDynamics Alliance',
     author_email='dev@bluedynamics.com',
+    url='https://github.com/collective/Products.DateRangeInRangeIndex',
     license='Simplified BSD',
     packages=find_packages('src'),
     package_dir={'': 'src'},
