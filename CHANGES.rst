@@ -2,10 +2,11 @@
 History
 =======
 
-2.1 (unreleased)
+2.0.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix exportimport.py (GenericSetup) for Python 3
+  [MrTango]
 
 
 2.0 (2018-07-12)

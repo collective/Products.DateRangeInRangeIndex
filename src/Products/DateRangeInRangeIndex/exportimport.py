@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from Products.DateRangeInRangeIndex.interfaces import IDateRangeInRangeIndex
 from Products.GenericSetup.interfaces import ISetupEnviron
 from Products.GenericSetup.utils import NodeAdapterBase
@@ -29,7 +30,7 @@ class DateRangeInRangeIndexNodeAdapter(NodeAdapterBase):
             _.tagName: _.getAttribute('value')
             for _ in node.childNodes if _.nodeType == 1
         }
-        self.context.startindex = child_nodes["startindex"].encode('utf-8')
-        self.context.endindex = child_nodes["endindex"].encode('utf-8')
+        self.context.startindex = child_nodes["startindex"]
+        self.context.endindex = child_nodes["endindex"]
 
     node = property(_exportNode, _importNode)
