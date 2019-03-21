@@ -3,7 +3,7 @@ History
 =======
 
 2.0.1 (unreleased)
-----------------
+------------------
 
 - Fix exportimport.py (GenericSetup) for Python 3 and add Python 3.7 to test matrix
   [MrTango]
