@@ -5,7 +5,9 @@ History
 2.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix Exception when calling ``catalog.getIndexDataForRID(rid)`` by implementing
+  missing ``getEntryForObject`` method
+  [petschki]
 
 
 2.0.1 (2019-03-21)
