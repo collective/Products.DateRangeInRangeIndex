@@ -214,6 +214,10 @@ class DateRangeInRangeIndex(SimpleItem):
         """
         pass
 
+    def getEntryForObject(self, docid, default=None):
+        """ nothing to return """
+        return default
+
     @security.protected(VIEW_PERMISSION)
     def getStartIndexField(self):
         return self.startindex
