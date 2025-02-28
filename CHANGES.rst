@@ -2,8 +2,8 @@
 History
 =======
 
-2.1 (unreleased)
-----------------
+2.0.2 (2025-02-28)
+------------------
 
 - Fix Exception when calling ``catalog.getIndexDataForRID(rid)`` by implementing
   missing ``getEntryForObject`` method
