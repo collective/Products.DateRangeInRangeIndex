@@ -2,6 +2,22 @@
 History
 =======
 
+2.0.3 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 2.0.2 (2025-02-28)
 ------------------
 
